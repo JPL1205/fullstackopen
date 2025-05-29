@@ -1,1 +1,25 @@
+# Ignore exercises folder if you don't want to track it at all
 exercises/
+
+# Ignore all node_modules folders recursively
+**/node_modules/
+
+# Ignore all lock files
+**/package-lock.json
+**/yarn.lock
+
+# Ignore build folders
+**/dist/
+**/build/
+
+# Ignore macOS and log files
+**/.DS_Store
+**/*.log
+
+# Ignore environment files
+**/.env
+
+# Ignore config files in subfolders
+**/vite.config.js
+**/.eslintrc*
+**/eslint.config.js
