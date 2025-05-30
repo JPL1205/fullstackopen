@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom/client';
-import App from './App_a';
+import App from './App_b';
 
 const notes = [
   {
