@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+
+import phonebookServices from './services/phonebook';
 
 const Filter = ({ name, handleChange }) => {
   return (
@@ -26,24 +28,33 @@ const PersonForm = ({ submit, name, number, nameChange, numberChange }) => {
   );
 };
 
-const Persons = ({ list }) => {
-  return list.map((p) => (
-    <div key={p.name}>
-      {p.name} {p.number}
-    </div>
-  ));
+const Persons = ({ list, handleDelete }) => {
+  return list.map((p) => {
+    // console.log(p.id);
+    return (
+      <div key={p.id}>
+        {p.name} {p.number}{' '}
+        <button onClick={(e) => handleDelete(e, p.id, p.name)}>delete</button>
+      </div>
+    );
+  });
 };
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456', id: 1 },
-    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
-    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
-    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 },
-  ]);
+  const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [searchName, setSearchName] = useState('');
+
+  useEffect(() => {
+    console.log('effect');
+    phonebookServices.getAll().then((returnData) => {
+      console.log(returnData);
+      setPersons(returnData);
+    });
+  }, []);
+
+  console.log(persons);
 
   const handleSearchNameChange = (e) => {
     setSearchName(e.target.value);
@@ -73,20 +84,51 @@ const App = () => {
     const exist = persons.some((p) => p.name === newName);
 
     if (exist) {
-      alert(`${newName} is already added to phonebook`);
-      return;
+      if (
+        window.confirm(
+          `${newName} is already added to phonebook, replace the old number with a new one?`
+        )
+      ) {
+        const replacePerson = {
+          name: newName,
+          number: newNumber,
+        };
+
+        const id = persons.find((p) => p.name === newName).id;
+
+        phonebookServices.update(id, replacePerson).then((returnPerson) => {
+          setPersons(persons.map((p) => (p.id === id ? returnPerson : p)));
+          setNewName('');
+          setNewNumber('');
+        });
+      }
+    } else {
+      const personObject = {
+        name: newName,
+        number: newNumber,
+      };
+
+      phonebookServices.create(personObject).then((returnData) => {
+        setPersons(persons.concat(returnData));
+        setNewName('');
+        setNewNumber('');
+      });
     }
+  };
 
-    const personObject = {
-      name: newName,
-      number: newNumber,
-      id: persons.length + 1,
-    };
+  const handleDelete = (event, id, name) => {
+    event.preventDefault();
 
-    setNewName('');
-    setNewNumber('');
-
-    setPersons(persons.concat(personObject));
+    if (window.confirm(`delete ${name} ?`)) {
+      phonebookServices
+        .remove(id)
+        .then(() => {
+          setPersons(persons.filter((p) => p.id != id));
+        })
+        .catch(() => {
+          console.log('failed to delete');
+        });
+    }
   };
 
   const personsDisplays =
@@ -108,7 +150,7 @@ const App = () => {
         numberChange={handleNumberChange}
       />
       <h2>Numbers</h2>
-      <Persons list={personsDisplays} />
+      <Persons list={personsDisplays} handleDelete={handleDelete} />
     </div>
   );
 };
