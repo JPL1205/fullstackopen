@@ -40,11 +40,28 @@ const Persons = ({ list, handleDelete }) => {
   });
 };
 
+const Notification = ({ message }) => {
+  if (message === null) {
+    return null;
+  }
+  return <div className="add">{message}</div>;
+};
+
+const Error = ({ errorMessage }) => {
+  if (errorMessage === null) {
+    return null;
+  }
+  return <div className="error">{errorMessage}</div>;
+};
+
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [searchName, setSearchName] = useState('');
+
+  const [addMessage, setAddMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     console.log('effect');
@@ -82,6 +99,7 @@ const App = () => {
     event.preventDefault();
 
     const exist = persons.some((p) => p.name === newName);
+    const name = newName;
 
     if (exist) {
       if (
@@ -114,6 +132,11 @@ const App = () => {
         setNewNumber('');
       });
     }
+
+    setAddMessage(`Added ${name}`);
+    setTimeout(() => {
+      setAddMessage(null);
+    }, 3000);
   };
 
   const handleDelete = (event, id, name) => {
@@ -127,6 +150,18 @@ const App = () => {
         })
         .catch(() => {
           console.log('failed to delete');
+          setErrorMessage(
+            `Information of ${name} has already been removed from server`
+          );
+
+          setTimeout(() => {
+            setErrorMessage(null);
+          }, 3000);
+        })
+        .then(() => {
+          phonebookServices.getAll().then((returnData) => {
+            setPersons(returnData);
+          });
         });
     }
   };
@@ -140,6 +175,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Error errorMessage={errorMessage} />
+      <Notification message={addMessage} />
       <Filter name={searchName} handleChange={handleSearchNameChange} />
       <h2>add a new</h2>
       <PersonForm
