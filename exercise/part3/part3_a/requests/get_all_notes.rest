@@ -1,0 +1,8 @@
+### Get all notes
+GET http://localhost:3001/api/notes
+
+### Delete note with ID 1
+DELETE http://localhost:3001/api/notes/1
+
+### Get all notes again
+GET http://localhost:3001/api/notes
