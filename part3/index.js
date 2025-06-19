@@ -1,6 +1,7 @@
 const http = require('http');
 const express = require('express');
 const morgan = require('morgan');
+const cors = require('cors');
 
 const app = express();
 
@@ -10,6 +11,7 @@ morgan.token('post-body', (req, res) => {
 });
 
 // middlewares
+app.use(cors());
 app.use(express.json());
 app.use(morgan('tiny'));
 app.use(
@@ -17,6 +19,7 @@ app.use(
     ':method :url :status :res[content-length] - :response-time ms :post-body'
   )
 );
+// app.use(express.static('dist'));
 
 persons = [
   {
@@ -90,14 +93,14 @@ app.post('/api/persons', (req, res) => {
   const person = {
     name: body.name,
     number: body.number,
-    id: genID(),
+    id: String(genID()),
   };
 
   persons = persons.concat(person);
   res.json(person);
 });
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`server at ${PORT}`);
 });
