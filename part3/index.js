@@ -19,7 +19,7 @@ app.use(
     ':method :url :status :res[content-length] - :response-time ms :post-body'
   )
 );
-// app.use(express.static('dist'));
+app.use(express.static('dist'));
 
 persons = [
   {
