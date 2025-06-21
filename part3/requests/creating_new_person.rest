@@ -2,8 +2,8 @@ POST http://localhost:3001/api/persons
 Content-Type: application/json
 
 {
-    "name": "Leo",
-    "number": "666"
+    "name": "Arto Hellas",
+    "number": "040-123456"
 }
 
 ### 
@@ -11,6 +11,33 @@ POST http://localhost:3001/api/persons
 Content-Type: application/json
 
 {
-    "name": "ami",
+    "name": "Ada Lovelace",
+    "number": "39-44-5323523"
+}
+
+###
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "name": "Dan Abramov",
+    "number": "12-43-234345"
+}
+
+###
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "name": "Mary Poppendieck",
+    "number": "39-23-6423122"
+}
+
+###
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "name": "Leo",
     "number": "666"
 }
