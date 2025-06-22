@@ -2,7 +2,7 @@ POST http://localhost:3001/api/notes
 Content-Type: application/json
 
 {
-    "content": "VS code rest client",
+    "content": "Ensure everything works, post to Mongo",
     "important": true
 }
 

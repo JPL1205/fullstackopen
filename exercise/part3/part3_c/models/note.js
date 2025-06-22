@@ -11,7 +11,7 @@ mongoose
     console.log('connected to MongoDB');
   })
   .catch((error) => {
-    console.log('eroor connecting to MongoDB:', error.message);
+    console.log('error connecting to MongoDB:', error.message);
   });
 
 const noteSchema = new mongoose.Schema({
@@ -20,7 +20,7 @@ const noteSchema = new mongoose.Schema({
 });
 
 noteSchema.set('toJSON', {
-  transfrom: (document, returnedObject) => {
+  transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString();
     delete returnedObject._id;
     delete returnedObject.__v;
