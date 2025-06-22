@@ -39,7 +39,6 @@ app.get('/api/persons', (req, res) => {
 });
 
 app.get('/info', (req, res) => {
-  console.log();
   const time = new Date();
   Person.find({}).then((persons) => {
     const total = persons.length;
