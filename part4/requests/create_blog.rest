@@ -1,0 +1,42 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+  "title": "Understanding Node.js Streams",
+  "author": "Jane Doe",
+  "url": "https://blog.example.com/node-streams",
+  "likes": 5
+}
+
+###
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+  "title": "Mastering Async/Await in JavaScript",
+  "author": "John Smith",
+  "url": "https://blog.example.com/async-await",
+  "likes": 12
+}
+
+###
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+  "title": "MongoDB Schema Design Best Practices",
+  "author": "Alex Chen",
+  "url": "https://blog.example.com/mongodb-schema",
+  "likes": 8
+}
+
+###
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+  "title": "Leo personal history",
+  "author": "Leo Li",
+  "url": "https://blog.example.com/mongodb-schemaaa",
+  "likes": 100
+}
