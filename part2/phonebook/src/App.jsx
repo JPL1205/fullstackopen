@@ -126,11 +126,20 @@ const App = () => {
         number: newNumber,
       };
 
-      phonebookServices.create(personObject).then((returnData) => {
-        setPersons(persons.concat(returnData));
-        setNewName('');
-        setNewNumber('');
-      });
+      phonebookServices
+        .create(personObject)
+        .then((returnData) => {
+          setPersons(persons.concat(returnData));
+          setNewName('');
+          setNewNumber('');
+        })
+        .catch((error) => {
+          console.log(error.response.data.error);
+          setErrorMessage(error.response.data.error);
+          setTimeout(() => {
+            setErrorMessage(null);
+          }, 3000);
+        });
     }
 
     setAddMessage(`Added ${name}`);
