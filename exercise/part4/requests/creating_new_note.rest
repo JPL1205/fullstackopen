@@ -1,0 +1,25 @@
+POST http://localhost:3001/api/notes
+Content-Type: application/json
+
+{
+    "content": "Ensure everything works, post to Mongo",
+    "important": true
+}
+
+###
+POST http://localhost:3001/api/notes
+Content-Type: application/json
+
+{
+    "content": "lol",
+    "important": true
+}
+
+###
+POST http://localhost:3001/api/notes
+Content-Type: application/json
+
+{
+    "content": "testing notes url",
+    "important": true
+}
