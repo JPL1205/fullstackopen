@@ -4,13 +4,20 @@ const mongoose = require('mongoose')
 const app = require('../app')
 const supertest = require('supertest')
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 const api = supertest(app)
 
-const { initialBlogs, BlogsInDB } = require('./test_helper')
+const {
+  initialBlogs,
+  BlogsInDB,
+  UserInDB,
+  createTestUserAndToken,
+} = require('./test_helper')
 
 beforeEach(async () => {
   await Blog.deleteMany({})
+  await User.deleteMany({})
   console.log('clear')
   await Blog.insertMany(initialBlogs)
 })
@@ -33,6 +40,7 @@ test('_id set to id correctly', async () => {
 
 test('Can add blog to DB', async () => {
   //   const blogsBeforeAdd = await BlogsInDB()
+  const { token } = await createTestUserAndToken()
 
   const newBlog = {
     title: 'Understanding Node.js Streams',
@@ -42,12 +50,13 @@ test('Can add blog to DB', async () => {
 
   await api
     .post('/api/blogs')
+    .set('Authorization', `Bearer ${token}`)
     .send(newBlog)
     .expect(201)
     .expect('Content-Type', /application\/json/)
 
   const blogsAfterAdd = await BlogsInDB()
-  console.log(blogsAfterAdd)
+  // console.log(blogsAfterAdd)
 
   const titles = blogsAfterAdd.map((b) => b.title)
 
@@ -58,6 +67,7 @@ test('Can add blog to DB', async () => {
 })
 
 test('without likes default to 0', async () => {
+  const { token } = await createTestUserAndToken()
   const newBlog = {
     title: 'without likes default to 0',
     author: 'Jane',
@@ -66,18 +76,20 @@ test('without likes default to 0', async () => {
 
   await api
     .post('/api/blogs')
+    .set('Authorization', `Bearer ${token}`)
     .send(newBlog)
     .expect(201)
     .expect('Content-Type', /application\/json/)
 
   const blogs = await BlogsInDB()
   const blogsAdded = blogs.find((b) => b.title === newBlog.title)
-  console.log('added blog', blogsAdded)
+  // console.log('added blog', blogsAdded)
 
   assert.strictEqual(blogsAdded.likes, 0)
 })
 
 test('required url and titles', async () => {
+  const { token } = await createTestUserAndToken()
   const MissingTitle = {
     author: 'Jane',
     url: 'https://blog.example.com/node-streams',
@@ -88,16 +100,28 @@ test('required url and titles', async () => {
     author: 'Jane',
   }
 
-  await api.post('/api/blogs').send(MissingTitle).expect(400)
+  await api
+    .post('/api/blogs')
+    .set('Authorization', `Bearer ${token}`)
+    .send(MissingTitle)
+    .expect(400)
 
-  await api.post('/api/blogs').send(MissingUrl).expect(400)
+  await api
+    .post('/api/blogs')
+    .set('Authorization', `Bearer ${token}`)
+    .send(MissingUrl)
+    .expect(400)
 })
 
 test('remove specific blog', async () => {
+  const { token } = await createTestUserAndToken()
   const blogs = await BlogsInDB()
   const blogToRemove = blogs[0]
 
-  await api.delete(`/api/blogs/${blogToRemove.id}`).expect(204)
+  await api
+    .delete(`/api/blogs/${blogToRemove.id}`)
+    .set('Authorization', `Bearer ${token}`)
+    .expect(204)
 
   const blogsAfter = await BlogsInDB()
   const titles = blogsAfter.map((b) => b.title)

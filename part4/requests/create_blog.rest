@@ -26,6 +26,7 @@ Content-Type: application/json
 {
   "title": "MongoDB Schema Design Best Practices",
   "author": "Alex Chen",
+  "userId": "68631281da94189df170497f",
   "url": "https://blog.example.com/mongodb-schema",
   "likes": 8
 }
@@ -33,10 +34,12 @@ Content-Type: application/json
 ###
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkxlbyIsImlkIjoiNjg2MzEyODFkYTk0MTg5ZGYxNzA0OTdmIiwiaWF0IjoxNzUxNDA1NjI1fQ.B1VyuyeiNC6Y0vOTPbWUEPIxIM7Pon9gN5Da4GDkFB4
 
 {
   "title": "Leo personal history",
   "author": "Leo Li",
+  "userId": "68632326521cdf2827f4478a",
   "url": "https://blog.example.com/mongodb-schemaaa",
   "likes": 100
 }
