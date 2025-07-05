@@ -13,7 +13,6 @@ import loginService from './services/login';
 const App = () => {
   const [loginVisible, setLoginVisible] = useState(false);
   const [notes, setNotes] = useState([]);
-  const [newNote, setNewNote] = useState('a new note...');
   const [showAll, setShowAll] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
   const [username, setUsername] = useState('');
@@ -38,11 +37,6 @@ const App = () => {
   }, []);
 
   console.log('render', notes.length, 'notes');
-
-  const handleNoteChange = (event) => {
-    console.log(event.target.value);
-    setNewNote(event.target.value);
-  };
 
   const toggleImportanceOf = (id) => {
     // const url = `http://localhost:3001/notes/${id}`;
