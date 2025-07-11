@@ -1,0 +1,25 @@
+POST http://localhost:3000/todos
+Content-Type: application/json
+
+{
+    "text": "Redis increment",
+    "done": false
+}
+
+###
+POST http://localhost:3000/todos
+Content-Type: application/json
+
+{
+    "text": "Second redis increment",
+    "done": false
+}
+
+###
+POST http://localhost:3000/todos
+Content-Type: application/json
+
+{
+    "text": "9002 redis increment",
+    "done": false
+}
